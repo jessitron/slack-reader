@@ -9,4 +9,4 @@
 (def SlackResponse {:ok s/Bool
                     (s/optional-key :args) {s/Keyword s/Str}
                     (s/optional-key :channels) [ChannelInfo]
-                    s/Keyword (s/either s/Str [s/Any])})
+                    })

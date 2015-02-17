@@ -14,9 +14,22 @@
      parameters :- {s/Keyword s/Str}]
       (:body (client/get (slack-url endpoint) {:query-params (merge parameters {:token token})
                                                :as :json}))))
-
-(s/defn channel-exists? :- s/Bool [name :- s/Str]
-  true)
-
 (s/defn ok :- s/Bool [response :- t/SlackResponse]
   (:ok response))
+
+(defn- with-ok-checking [f]
+  (let [response (f)]
+    (if (ok response)
+      response
+      (.throw (Exception. (str "Failure from slack API " response))))))
+
+
+(s/defn list-channels :- [t/ChannelInfo] []
+  (:channels (with-ok-checking (fn []
+                                 (call-slack "channels.list")))))
+
+(s/defn channel-exists? :- s/Bool [name :- s/Str]
+  (let [existing-channels (map :name (list-channels))]
+    (contains? (set existing-channels) name)))
+
+
