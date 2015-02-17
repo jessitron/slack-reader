@@ -12,7 +12,7 @@
      (call-slack endpoint {}))
   ( [endpoint :- s/Str
      parameters :- {s/Keyword s/Str}]
-      (:body (client/get (slack-url endpoint) {:query-params {:token token}
+      (:body (client/get (slack-url endpoint) {:query-params (merge parameters {:token token})
                                                :as :json}))))
 
 (s/defn ok :- s/Bool [response :- t/SlackResponse]

@@ -9,7 +9,7 @@
 (use-fixtures :once schema.test/validate-schemas)
 
 
-(defspec test-api
+(defspec test-api 10
   (prop/for-all [parameters (gen/map gen/keyword gen/string-alphanumeric)]
                 (let [response (call-slack "api.test" parameters)
                       parameter-echo (-> (:args response)
