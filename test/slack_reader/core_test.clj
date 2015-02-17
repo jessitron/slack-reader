@@ -25,6 +25,7 @@
     (let [users-by-name (list-users)]
       (is (not (nil? (get users-by-name "jess")))))))
 
+;; ha ha, need this for cleanup
 (def my-user {:id "U029S7MJ5"})
 (defn archive-my-lonely-channels [user]
   (let [
@@ -51,6 +52,8 @@
   (testing "archived channels don't exist"
     (is (not (channel-exists? "guest-support-rocks")))))
 
+;; TODO: work from archived channels instead of creating a million new ones
+;; should be fair to un-archive, use it, re-archive
 (defspec create-and-delete-channel 2
   (prop/for-all [name (gen/such-that #(not (channel-exists? %)) channel-gen)]
                 (let [channel-info (create-channel name)]
