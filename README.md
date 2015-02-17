@@ -1,8 +1,10 @@
 # slack-reader
 
-This is probably some code that I use on my blog.
+begin writing a program to read stuff from slack.
 
-## Usage
+get a new token here before running anything: https://api.slack.com/web
+
+# Usage
 
 FIXME
 
