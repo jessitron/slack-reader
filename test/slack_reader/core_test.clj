@@ -25,8 +25,11 @@
       (is (channel-ids "cuteness"))
       (is (channel-ids "pravda")))))
 
-(defspec curd-test
-  (testing "Create a channel and delete it"))
+(deftest channel-existence
+  (testing "channel that must exist"
+    (is (channel-exists? "cuteness")))
+  (testing "channel that does not exist"
+    (is (not (channel-exists? "no-more-clojure")))))
 
 (deftest can-hit-it
   (testing "connectivity"

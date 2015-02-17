@@ -15,5 +15,8 @@
       (:body (client/get (slack-url endpoint) {:query-params (merge parameters {:token token})
                                                :as :json}))))
 
+(s/defn channel-exists? :- s/Bool [name :- s/Str]
+  true)
+
 (s/defn ok :- s/Bool [response :- t/SlackResponse]
   (:ok response))
