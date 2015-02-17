@@ -11,9 +11,11 @@
 
 (defspec test-api
   (prop/for-all [parameters (gen/map gen/keyword gen/string-alphanumeric)]
-                (let [response (call-slack "api.test" parameters)]
+                (let [response (call-slack "api.test" parameters)
+                      parameter-echo (-> (:args response)
+                                         (dissoc :token))]
                   (and (is (ok response))
-                       (is (= parameters (:args response))))
+                       (is (= parameters parameter-echo)))
                   )))
 
 (deftest can-hit-it
