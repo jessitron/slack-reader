@@ -9,9 +9,12 @@
 (use-fixtures :once schema.test/validate-schemas)
 
 
-(defspec i-like-orange 100
-  (prop/for-all [n gen/int]
-                (is (= :orange (favorite-color)))))
+(defspec test-api
+  (prop/for-all [parameters (gen/map gen/keyword gen/string-alphanumeric)]
+                (let [response (call-slack "api.test" parameters)]
+                  (and (is (ok response))
+                       (is (= parameters (:args response))))
+                  )))
 
 (deftest can-hit-it
   (testing "connectivity"
