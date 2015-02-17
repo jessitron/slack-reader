@@ -18,6 +18,16 @@
                        (is (= parameters parameter-echo)))
                   )))
 
+(deftest list-channels-test
+  (let [response (call-slack "channels.list")]
+    (is (ok response))
+    (let [channel-ids (set (map :name (:channels response)))]
+      (is (channel-ids "cuteness"))
+      (is (channel-ids "pravda")))))
+
+(defspec curd-test
+  (testing "Create a channel and delete it"))
+
 (deftest can-hit-it
   (testing "connectivity"
     (is (ok (call-slack "api.test")))))
