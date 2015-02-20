@@ -90,3 +90,21 @@
 (deftest can-hit-it
   (testing "connectivity"
     (is (ok (call-slack "api.test")))))
+
+(defn sample-one [g]  (last (gen/sample g)))
+;; this is not going to work when it generates an archived one
+(defn new-channel []
+  (create-channel (sample-one channel-name-gen)))
+
+(defn with-channel [messages f]
+  (let [channel-info (new-channel)]
+    (doall (map (partial post (:id channel-info)) messages))
+    (f channel-info)
+    (archive-channel channel-info)))
+
+(deftest read-from-channel
+  (let [message "Spank Me"]
+    (with-channel [message]
+      (fn [channel-info]
+        (let [results (read-messages (:id channel-info))]
+           (is (some (partial = message) results)))))))

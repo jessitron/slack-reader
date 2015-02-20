@@ -16,6 +16,8 @@
 
 (def AngrySlackResponse {:ok (s/eq false)
                          :error s/Str
-                         (s/optional-key :req_method) s/Str})
+                         (s/optional-key :req_method) s/Str
+                         (s/optional-key :requested-url) s/Str
+                         (s/optional-key :request-params) {s/Keyword s/Any}})
 
 (def SlackResponse (s/either HappySlackResponse AngrySlackResponse))
