@@ -107,4 +107,11 @@
     (with-channel [message]
       (fn [channel-info]
         (let [results (read-messages (:id channel-info))]
-           (is (some (partial = message) results)))))))
+          (is (some (partial = message) results)))))))
+
+(deftest read-with-emoji
+  (let [message ":poodle: me gusta"]
+    (with-channel [message]
+      (fn [channel-info]
+        (let [results (read-messages (:id channel-info))]
+          (is (some (partial = message) results)))))))
