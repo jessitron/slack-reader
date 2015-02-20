@@ -1,10 +1,18 @@
 (ns slack-reader.core
   (:require [schema.core :as s]
             [clj-http.client :as client]
+            [clojure.edn]
            [slack-reader.schema :as t]))
 
-(def token "xoxp-2185251080-2332259617-3744086818-6cb514")
-(def authorization {:token token})
+(def token (delay (let [token (clojure.edn/read-string (slurp "token.edn"))]
+                    (if (nil? token)
+                      (throw (Exception. "No token found.
+1. Go to https://api.slack.com/web and get yourself a token
+2. Put it in a string (quoted) in a file token.edn in the project root
+3. Try again")))
+                    (println "Token:" token)
+                    token)))
+(defn authorization [] {:token @token})
 (defn slack-url [endpoint]
   (str "https://slack.com/api/" endpoint))
 
@@ -14,7 +22,7 @@
   ( [endpoint :- s/Str
      parameters :- {s/Keyword (s/either s/Str s/Num)}]
       (let [url (slack-url endpoint)
-            params (merge parameters authorization)
+            params (merge parameters (authorization))
             response (client/get url {:query-params params
                                       :as :json})]
         (println (:body response))
