@@ -1,6 +1,7 @@
 (ns slack-reader.core-test
   (:require [clojure.test :refer :all]
             [slack-reader.core :refer :all]
+            [slack-reader.gen :as mygen]
             [clojure.test.check.generators :as gen]
             [clojure.test.check.properties :as prop]
             [clojure.test.check.clojure-test :refer [defspec]]
@@ -10,35 +11,13 @@
 
 (use-fixtures :once schema.test/validate-schemas)
 
-(defn- to-and-back [to from f]
-                          (fn [& in]
-                            (from (apply f (map to in)))))
-(def char-range (to-and-back int (partial map char) range))
-;; lowercase letters, underscore, dash
-
-(def channel-name-allowed-chars (set (concat (char-range \a \z) (char-range \0 \9) [\_ \-])))
-(def ChannelNameChar (s/pred channel-name-allowed-chars "lowercase, digit, dash, underscore"))
-
-(def channel-char-gen (gen/elements channel-name-allowed-chars))
-(def disallowed? (partial contains? #{"_" "-"}))
-
-;; Can't be all underscores, or all dashes. Can be a combo of the two
-;; (by observation)
-(s/defn disallowed? [channel-chars :- [ChannelNameChar]]
-  (or (every? (partial = \_) channel-chars)
-      (every? (partial = \-) channel-chars)))
-
-(def channel-name-gen (gen/no-shrink
-                  (gen/such-that (complement disallowed?)
-                                 (gen/fmap (partial apply str)
-                                           (gen/vector channel-char-gen 1 21)))))
 
 (defspec test-api 10
   (prop/for-all [parameters (gen/map gen/keyword gen/string-alphanumeric)]
                 (let [response (call-slack "api.test" parameters)
                       parameter-echo (-> (:args response)
                                          (dissoc :token))]
-                  (and (is (ok response))
+                  (and (is (ok? response))
                        (is (= parameters parameter-echo)))
                   )))
 
@@ -63,7 +42,7 @@
 
 (deftest list-channels-test
   (let [response (call-slack "channels.list")]
-    (is (ok response))
+    (is (ok? response))
     (let [channel-ids (set (map :name (:channels response)))]
       (is (channel-ids "general"))
       (is (channel-ids "random")))))
@@ -79,7 +58,7 @@
 ;; TODO: work from archived channels instead of creating a million new ones
 ;; should be fair to un-archive, use it, re-archive
 (defspec create-and-delete-channel 2
-  (prop/for-all [name (gen/such-that #(not (channel-exists? %)) channel-name-gen)]
+  (prop/for-all [name (gen/such-that #(not (channel-exists? %)) mygen/channel-name-gen)]
                 (println (str "creating channel<" name) ">")
                 (let [channel-info (create-channel name)]
                   (and (is (channel-exists? name))
@@ -89,12 +68,12 @@
 
 (deftest can-hit-it
   (testing "connectivity"
-    (is (ok (call-slack "api.test")))))
+    (is (ok? (call-slack "api.test")))))
 
 (defn sample-one [g]  (last (gen/sample g)))
 ;; this is not going to work when it generates an archived one
 (defn new-channel []
-  (create-channel (sample-one channel-name-gen)))
+  (create-channel (sample-one mygen/channel-name-gen)))
 
 (defn with-channel [messages f]
   (let [channel-info (new-channel)]

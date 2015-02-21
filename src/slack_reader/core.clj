@@ -11,7 +11,7 @@
 2. Put it in a string (quoted) in a file token.edn in the project root
 3. Try again")))
                     (println "Tokens:" token)
-                    (:outpace token))))
+                    (:jessitron token))))
 (defn authorization [] {:token @token})
 (defn slack-url [endpoint]
   (str "https://slack.com/api/" endpoint))
@@ -36,7 +36,7 @@
             params (merge parameters (authorization))
             response (client/get url {:query-params params
                                       :as :json})]
-        (println (:body response))
+        #_(println (:body response))
         (add-orig-msg-to-errors (:body response) url params))))
 
 

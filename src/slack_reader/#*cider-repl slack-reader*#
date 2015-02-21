@@ -1,0 +1,261 @@
+; CIDER 0.5.0 (package: 0.6.0) (Clojure 1.6.0, nREPL 0.2.6)
+user> 
+#<Namespace slack-reader.schema-test.clj>
+slack-reader.schema-test.clj> (channel-name-test)
+
+FAIL in (channel-name-test) (schema_test.clj:10)
+lowercase and digits are cool
+expected: (nil? (s/check ChannelName "abcd01234567890xyz"))
+  actual: (not
+           (nil?
+            [nil
+             nil
+             nil
+             nil
+             nil
+             nil
+             nil
+             nil
+             nil
+             nil
+             nil
+             nil
+             nil
+             (not ("lowercase, digit, dash, underscore" \9))
+             nil
+             nil
+             nil
+             (not ("lowercase, digit, dash, underscore" \z))]))
+nil
+slack-reader.schema-test.clj> (char-range \a \z)
+CompilerException java.lang.RuntimeException: Unable to resolve symbol: char-range in this context, compiling:(/private/var/folders/70/gz382v_s05jbkkk2vy0p9wlw0000gn/T/form-init7459592598267495687.clj:1:1) 
+slack-reader.schema-test.clj> (range 0 1)
+(0)
+slack-reader.schema-test.clj> 
+#<Namespace util.char-range-test>
+util.char-range-test> (char-range-test)
+
+FAIL in (char-range-test) (char_range_test.clj:7)
+simple range
+expected: [\a \b \c]
+  actual: (\a \b)
+    diff: - [nil nil \c]
+nil
+util.char-range-test> (char-range-test)
+nil
+util.char-range-test> 
+#<Namespace slack-reader.schema-test.clj>
+slack-reader.schema-test.clj> (channel-name-test)
+
+FAIL in (channel-name-test) (schema_test.clj:10)
+lowercase and digits are cool
+expected: (nil? (s/check ChannelName "abcd01234567890xyz"))
+  actual: (not
+           (nil?
+            [nil
+             nil
+             nil
+             nil
+             nil
+             nil
+             nil
+             nil
+             nil
+             nil
+             nil
+             nil
+             nil
+             (not ("lowercase, digit, dash, underscore" \9))
+             nil
+             nil
+             nil
+             (not ("lowercase, digit, dash, underscore" \z))]))
+nil
+slack-reader.schema-test.clj> (channel-name-test)
+nil
+slack-reader.schema-test.clj> (channel-name-test)
+nil
+slack-reader.schema-test.clj> (channel-name-test)
+nil
+slack-reader.schema-test.clj> (s/check ChannelName "")
+(not ("Channel name length: 1-21" []))
+slack-reader.schema-test.clj> (s/check ChannelName "___")
+nil
+slack-reader.schema-test.clj> (s/check ChannelName "___")
+nil
+slack-reader.schema-test.clj> (channel-name-test)
+
+FAIL in (channel-name-test) (schema_test.clj:14)
+empty is bad
+expected: (nil? (s/check ChannelName ""))
+  actual: (not (nil? (not ("Channel name length: 1-21" []))))
+nil
+slack-reader.schema-test.clj> (channel-name-test)
+nil
+slack-reader.schema-test.clj> (repeat "a" 21)
+ClassCastException java.lang.String cannot be cast to java.lang.Number  clojure.lang.Numbers.isPos (Numbers.java:94)
+slack-reader.schema-test.clj> (repeat 21 "a")
+("a" "a" "a" "a" "a" "a" "a" "a" "a" "a" "a" "a" "a" "a" "a" "a" "a" "a" "a" "a" "a")
+slack-reader.schema-test.clj> (channel-name-test)
+
+ERROR in (channel-name-test) (AFn.java:429)
+21 chars is OK
+expected: (nil? (s/check (apply str (repeat max-channel-name-len "x"))))
+  actual: clojure.lang.ArityException: Wrong number of args (1) passed to: core/check
+ at clojure.lang.AFn.throwArity (AFn.java:429)
+    clojure.lang.AFn.invoke (AFn.java:32)
+    slack_reader.schema_test.clj$fn__4593$fn__4610.invoke (schema_test.clj:16)
+    slack_reader.schema_test.clj/fn (schema_test.clj:15)
+    clojure.test$test_var$fn__7187.invoke (test.clj:704)
+    clojure.test$test_var.invoke (test.clj:704)
+    slack_reader.schema_test.clj$channel_name_test.invoke (schema_test.clj:6)
+    slack_reader.schema_test.clj$eval4622.invoke (form-init7459592598267495687.clj:1)
+    clojure.lang.Compiler.eval (Compiler.java:6703)
+    clojure.lang.Compiler.eval (Compiler.java:6666)
+    clojure.core$eval.invoke (core.clj:2927)
+    clojure.main$repl$read_eval_print__6625$fn__6628.invoke (main.clj:239)
+    clojure.main$repl$read_eval_print__6625.invoke (main.clj:239)
+    clojure.main$repl$fn__6634.invoke (main.clj:257)
+    clojure.main$repl.doInvoke (main.clj:257)
+    clojure.lang.RestFn.invoke (RestFn.java:1523)
+    clojure.tools.nrepl.middleware.interruptible_eval$evaluate$fn__592.invoke (interruptible_eval.clj:67)
+    clojure.lang.AFn.applyToHelper (AFn.java:152)
+    clojure.lang.AFn.applyTo (AFn.java:144)
+    clojure.core$apply.invoke (core.clj:624)
+    clojure.core$with_bindings_STAR_.doInvoke (core.clj:1862)
+    clojure.lang.RestFn.invoke (RestFn.java:425)
+    clojure.tools.nrepl.middleware.interruptible_eval$evaluate.invoke (interruptible_eval.clj:51)
+    clojure.tools.nrepl.middleware.interruptible_eval$interruptible_eval$fn__634$fn__637.invoke (interruptible_eval.clj:183)
+    clojure.tools.nrepl.middleware.interruptible_eval$run_next$fn__627.invoke (interruptible_eval.clj:152)
+    clojure.lang.AFn.run (AFn.java:22)
+    java.util.concurrent.ThreadPoolExecutor.runWorker (ThreadPoolExecutor.java:1142)
+    java.util.concurrent.ThreadPoolExecutor$Worker.run (ThreadPoolExecutor.java:617)
+    java.lang.Thread.run (Thread.java:745)
+
+ERROR in (channel-name-test) (AFn.java:429)
+22 chars is not OK
+expected: (nil? (s/check (apply str (repeat (inc max-channel-name-len) "x"))))
+  actual: clojure.lang.ArityException: Wrong number of args (1) passed to: core/check
+ at clojure.lang.AFn.throwArity (AFn.java:429)
+    clojure.lang.AFn.invoke (AFn.java:32)
+    slack_reader.schema_test.clj$fn__4593$fn__4614.invoke (schema_test.clj:18)
+    slack_reader.schema_test.clj/fn (schema_test.clj:17)
+    clojure.test$test_var$fn__7187.invoke (test.clj:704)
+    clojure.test$test_var.invoke (test.clj:704)
+    slack_reader.schema_test.clj$channel_name_test.invoke (schema_test.clj:6)
+    slack_reader.schema_test.clj$eval4622.invoke (form-init7459592598267495687.clj:1)
+    clojure.lang.Compiler.eval (Compiler.java:6703)
+    clojure.lang.Compiler.eval (Compiler.java:6666)
+    clojure.core$eval.invoke (core.clj:2927)
+    clojure.main$repl$read_eval_print__6625$fn__6628.invoke (main.clj:239)
+    clojure.main$repl$read_eval_print__6625.invoke (main.clj:239)
+    clojure.main$repl$fn__6634.invoke (main.clj:257)
+    clojure.main$repl.doInvoke (main.clj:257)
+    clojure.lang.RestFn.invoke (RestFn.java:1523)
+    clojure.tools.nrepl.middleware.interruptible_eval$evaluate$fn__592.invoke (interruptible_eval.clj:67)
+    clojure.lang.AFn.applyToHelper (AFn.java:152)
+    clojure.lang.AFn.applyTo (AFn.java:144)
+    clojure.core$apply.invoke (core.clj:624)
+    clojure.core$with_bindings_STAR_.doInvoke (core.clj:1862)
+    clojure.lang.RestFn.invoke (RestFn.java:425)
+    clojure.tools.nrepl.middleware.interruptible_eval$evaluate.invoke (interruptible_eval.clj:51)
+    clojure.tools.nrepl.middleware.interruptible_eval$interruptible_eval$fn__634$fn__637.invoke (interruptible_eval.clj:183)
+    clojure.tools.nrepl.middleware.interruptible_eval$run_next$fn__627.invoke (interruptible_eval.clj:152)
+    clojure.lang.AFn.run (AFn.java:22)
+    java.util.concurrent.ThreadPoolExecutor.runWorker (ThreadPoolExecutor.java:1142)
+    java.util.concurrent.ThreadPoolExecutor$Worker.run (ThreadPoolExecutor.java:617)
+    java.lang.Thread.run (Thread.java:745)
+nil
+slack-reader.schema-test.clj> (channel-name-test)
+
+FAIL in (channel-name-test) (schema_test.clj:18)
+22 chars is not OK
+expected: (nil?
+           (s/check
+            ChannelName
+            (apply str (repeat (inc max-channel-name-len) "x"))))
+  actual: (not
+           (nil?
+            (not ("Channel name length: 1-21" a-clojure.lang.PersistentVector))))
+nil
+slack-reader.schema-test.clj> (channel-name-test)
+nil
+slack-reader.schema-test.clj> (channel-name-test)
+
+FAIL in (channel-name-test) (schema_test.clj:22)
+all underscores is not OK
+expected: (not (nil? (s/check ChannelName "____")))
+  actual: (not (not true))
+nil
+slack-reader.schema-test.clj> (channel-name-test)
+
+FAIL in (channel-name-test) (schema_test.clj:24)
+all underscores is not OK
+expected: (not (nil? (s/check ChannelName "____")))
+  actual: (not (not true))
+
+FAIL in (channel-name-test) (schema_test.clj:26)
+all dashes is not OK
+expected: (not (nil? (s/check ChannelName "----")))
+  actual: (not (not true))
+nil
+slack-reader.schema-test.clj> 
+#<Namespace slack-reader.schema>
+slack-reader.schema> (all-underscores? "__")
+false
+slack-reader.schema> 
+slack-reader.schema> (seq "__")
+(\_ \_)
+slack-reader.schema> (distinct (seq "__"))
+(\_)
+slack-reader.schema> (all-underscores? "__")
+true
+slack-reader.schema> (all-underscores? "__-")
+false
+slack-reader.schema> (all-dashes? "--")
+true
+slack-reader.schema> (all-dashes? "--d")
+false
+slack-reader.schema> (set "foo")
+#{\f \o}
+slack-reader.schema> (all-dashes? "--d")
+false
+slack-reader.schema> (all-dashes? "--")
+true
+slack-reader.schema> (all-underscores? "__-")
+false
+slack-reader.schema> (all-underscores? "__")
+true
+slack-reader.schema> 
+#<Namespace slack-reader.schema-test.clj>
+slack-reader.schema-test.clj> (channel-name-test)
+
+FAIL in (channel-name-test) (schema_test.clj:26)
+all dashes is not OK
+expected: (not (nil? (s/check ChannelName "----")))
+  actual: (not (not true))
+nil
+slack-reader.schema-test.clj> (channel-name-test)
+nil
+slack-reader.schema-test.clj> (s/check ChannelName "---")
+(not ("All dashes is not OK" [\- \- \-]))
+slack-reader.schema-test.clj> (s/check ChannelName "---")
+(named (not ("All dashes is not OK" [\- \- \-])) "Channel Name")
+slack-reader.schema-test.clj> (s/check ChannelName "---")
+(named (not ("All dashes is not OK" "---")) "Channel Name")
+slack-reader.schema-test.clj> (def Poo (s/both (fmap first s/Num) [s/Num]))
+CompilerException java.lang.RuntimeException: Unable to resolve symbol: fmap in this context, compiling:(/private/var/folders/70/gz382v_s05jbkkk2vy0p9wlw0000gn/T/form-init7459592598267495687.clj:1:18) 
+slack-reader.schema-test.clj> (require 'var-schema.core)
+nil
+slack-reader.schema-test.clj> (def Poo (s/both (var-schema/fmap first s/Num) [s/Num]))
+CompilerException java.lang.RuntimeException: No such namespace: var-schema, compiling:(/private/var/folders/70/gz382v_s05jbkkk2vy0p9wlw0000gn/T/form-init7459592598267495687.clj:1:18) 
+slack-reader.schema-test.clj> (def Poo (s/both (var-schema.core/fmap first s/Num) [s/Num]))
+#'slack-reader.schema-test.clj/Poo
+slack-reader.schema-test.clj> (s/check Poo [1])
+(not (sequential? 1))
+slack-reader.schema-test.clj> (def NotPoo (s/both [s/Num] (var-schema.core/fmap first s/Num))
+                                )
+#'slack-reader.schema-test.clj/NotPoo
+slack-reader.schema-test.clj> (s/check NotPoo [1])
+nil
+slack-reader.schema-test.clj> 

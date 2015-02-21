@@ -6,4 +6,5 @@
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/test.check "0.7.0"]
                  [clj-http "1.0.1"]
-                 [prismatic/schema "0.3.7"]])
+                 [prismatic/schema "0.3.7"]
+                 [jessitron/var-schema "0.1.0"]])
