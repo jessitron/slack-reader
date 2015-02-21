@@ -10,8 +10,8 @@
 1. Go to https://api.slack.com/web and get yourself a token
 2. Put it in a string (quoted) in a file token.edn in the project root
 3. Try again")))
-                    (println "Token:" token)
-                    token)))
+                    (println "Tokens:" token)
+                    (:outpace token))))
 (defn authorization [] {:token @token})
 (defn slack-url [endpoint]
   (str "https://slack.com/api/" endpoint))
@@ -74,7 +74,16 @@
 (s/defn post [channel text]
   (call-slack "chat.postMessage" {:channel channel :text text}))
 
+(s/defn channel-id-from-name [channel-name]
+  (first (for [channel-info (list-channels)
+               :when (= channel-name (:name channel-info))]
+           (:id channel-info)
+           ))
+  )
 ;; lazy-seq schema please
 (defn read-messages [channel-id]
-  (map :text (filter (comp (partial = "message") :type) ( :messages
-                                                          (with-ok-checking #(call-slack "channels.history" { :channel channel-id }))))))
+  (->> (with-ok-checking #(call-slack "channels.history" {:count 1000
+                                                          :channel channel-id }))
+       :messages
+       (filter (comp (partial = "message") :type))
+       (map :text)))
