@@ -19,8 +19,8 @@
 (s/defn ok? :- s/Bool [response :- t/SlackResponse]
   (:ok response))
 
-(s/defn add-orig-msg-to-errors :- t/SlackResponse [response :- t/SlackResponse
-                              url
+(s/defn add-orig-msg-to-errors  [response 
+                                                   url
                                                    params]
   (cond (ok? response)
         response
@@ -36,7 +36,7 @@
             params (merge parameters (authorization))
             response (client/get url {:query-params params
                                       :as :json})]
-        #_(println (:body response))
+        (println (:body response))
         (add-orig-msg-to-errors (:body response) url params))))
 
 
@@ -80,10 +80,15 @@
            (:id channel-info)
            ))
   )
+
+(defn printing [x]
+  (println x)
+  x)
+
 ;; lazy-seq schema please
-(defn read-messages [channel-id]
+(s/defn read-messages :- [t/Message] [channel-id]
   (->> (with-ok-checking #(call-slack "channels.history" {:count 1000
                                                           :channel channel-id }))
        :messages
        (filter (comp (partial = "message") :type))
-       (map :text)))
+))

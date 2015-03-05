@@ -9,7 +9,7 @@
 ;; Can't be all underscores, or all dashes. Can be a combo of the two
 ;; (by observation)
 (defn disallowed? [channel-name]
-  (or all-underscores? all-dashes?))
+  (or (all-underscores? channel-name) (all-dashes? channel-name)))
 
 (def channel-name-gen (gen/no-shrink
                   (gen/such-that (complement disallowed?)

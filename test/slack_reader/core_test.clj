@@ -81,12 +81,15 @@
     (f channel-info)
     (archive-channel channel-info)))
 
+(defn list-contains? [item list]
+  (some (partial = item) list))
+
 (deftest read-from-channel
   (let [message "Spank Me"]
     (with-channel [message]
       (fn [channel-info]
         (let [results (read-messages (:id channel-info))]
-          (is (some (partial = message) results)))))))
+          (is (list-contains? message (map :text results))))))))
 
 (deftest read-with-emoji
   (let [message ":poodle: me gusta"]

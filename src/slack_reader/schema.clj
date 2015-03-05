@@ -34,21 +34,37 @@
 ;;
 ;; Users
 ;;
-(def UserInfo {:id s/Str
-               :name s/Str
+(s/defschema UserId (s/named s/Str "UserId"))
+(s/defschema UserName (s/named s/Str "UserName"))
+(def UserInfo {:id UserId
+               :name UserName
                s/Keyword s/Any})
+
+;;
+;; Messages
+;;
+(s/defschema SlackTimestamp (s/named s/Str "Slack Timestamp"))
+(s/defschema Message {(s/optional-key :user) UserId    ;; not populated for bot messages
+                      (s/optional-key :username) UserName ;; not populated for channel join
+                      :type (s/eq "message")
+                      :subtype s/Str
+                      :ts SlackTimestamp
+                      :text s/Str})
 
 ;;
 ;; Full responses
 ;;
-(def HappySlackResponse {:ok (s/eq true)
-                         (s/optional-key :args) {s/Keyword s/Str}
-                         (s/optional-key :channels) [ChannelInfo]})
+(s/defschema HappySlackResponse {:ok (s/eq true)
+                                 (s/optional-key :args) {s/Keyword s/Str}
+                                 (s/optional-key :channel) ChannelInfo
+                         (s/optional-key :channels) [ChannelInfo]
+                                 (s/optional-key :messages) [Message]
+                                 s/Keyword s/Any})
 
-(def AngrySlackResponse {:ok (s/eq false)
+(s/defschema AngrySlackResponse {:ok (s/eq false)
                          :error s/Str
                          (s/optional-key :req_method) s/Str
                          (s/optional-key :requested-url) s/Str
                          (s/optional-key :request-params) {s/Keyword s/Any}})
 
-(def SlackResponse (s/either HappySlackResponse AngrySlackResponse))
+(s/defschema SlackResponse s/Any)
